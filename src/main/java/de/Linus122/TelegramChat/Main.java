@@ -40,6 +40,7 @@ public class Main extends JavaPlugin implements Listener {
 		this.saveDefaultConfig();
 		cfg = this.getConfig();
 		Utils.cfg = cfg;
+		Telegram.cfg = cfg;
 
 		Bukkit.getPluginCommand("telegram").setExecutor(new TelegramCmd());
 		Bukkit.getPluginCommand("linktelegram").setExecutor(new LinkTelegramCmd());

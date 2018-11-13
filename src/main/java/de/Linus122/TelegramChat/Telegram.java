@@ -6,9 +6,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +20,12 @@ import de.Linus122.TelegramComponents.Chat;
 import de.Linus122.TelegramComponents.ChatMessageToMc;
 import de.Linus122.TelegramComponents.Update;
 
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.Bukkit;
+
 public class Telegram {
+
+	public static FileConfiguration cfg;
 	public JsonObject authJson;
 	public boolean connected = false;
 
@@ -78,17 +81,23 @@ public class Telegram {
 					if(lastUpdate == update.getUpdate_id()) return true;
 					lastUpdate = update.getUpdate_id();
 
+					Bukkit.getServer().broadcastMessage("[telegram] 1");
 					if (update.getMessage() != null) {
 						Chat chat = update.getMessage().getChat();
-						if (chat.isPrivate()) {
+						if (true) {
+//						if (chat.isPrivate()) {
+							Bukkit.getServer().broadcastMessage("[telegram] 2");
 							if (!Main.getBackend().ids.contains(chat.getId()))
 								Main.getBackend().ids.add(chat.getId());
 
 							if (update.getMessage().getText() != null) {
 								String text = update.getMessage().getText();
+								Bukkit.getServer().broadcastMessage("[telegram] 3");
+								Bukkit.getServer().broadcastMessage(text);
 								if (text.length() == 0)
 									return true;
 								if (text.equals("/start")) {
+									Bukkit.getServer().broadcastMessage("[telegram] 4");
 									if (Main.getBackend().isFirstUse()) {
 										Main.getBackend().setFirstUse(false);
 										ChatMessageToTelegram chat2 = new ChatMessageToTelegram();
@@ -99,10 +108,12 @@ public class Telegram {
 									}
 									this.sendMsg(chat.getId(), Utils.formatMSG("can-see-but-not-chat")[0]);
 								} else if (Main.getBackend().getLinkCodes().containsKey(text)) {
+									Bukkit.getServer().broadcastMessage("[telegram] 5");
 									// LINK
 									Main.link(Main.getBackend().getUUIDFromLinkCode(text), chat.getId());
 									Main.getBackend().removeLinkCode(text);
 								} else if (Main.getBackend().getLinkedChats().containsKey(chat.getId())) {
+									Bukkit.getServer().broadcastMessage("[telegram] 6");
 									ChatMessageToMc chatMsg = new ChatMessageToMc(
 											Main.getBackend().getUUIDFromChatID(chat.getId()), text, chat.getId());
 									for (TelegramActionListener actionListener : listeners) {
@@ -112,11 +123,14 @@ public class Telegram {
 										Main.sendToMC(chatMsg);
 									}
 								} else {
+									Bukkit.getServer().broadcastMessage("[telegram] 7");
 									this.sendMsg(chat.getId(), Utils.formatMSG("need-to-link")[0]);
 								}
 							}
 
 						} else if (!chat.isPrivate()) {
+							Bukkit.getServer().broadcastMessage("[telegram] is not private");
+							System.out.print("[telegram] is not private");
 							int id = chat.getId();
 							if (!Main.getBackend().ids.contains(id))
 								Main.getBackend().ids.add(id);
@@ -160,9 +174,11 @@ public class Telegram {
 
 	public void post(String method, String json) {
 		try {
+			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8001));
+
 			String body = json;
 			URL url = new URL(String.format(API_URL_GENERAL, Main.getBackend().getToken(), method));
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);
 			connection.setRequestMethod("POST");
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
@@ -188,9 +204,10 @@ public class Telegram {
 	}
 
 	public JsonObject sendGet(String url) throws IOException {
+		Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8001));
 		String a = url;
 		URL url2 = new URL(a);
-		URLConnection conn = url2.openConnection();
+		URLConnection conn = url2.openConnection(proxy);
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
