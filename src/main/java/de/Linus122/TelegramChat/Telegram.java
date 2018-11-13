@@ -81,7 +81,7 @@ public class Telegram {
 					if(lastUpdate == update.getUpdate_id()) return true;
 					lastUpdate = update.getUpdate_id();
 
-					Bukkit.getServer().broadcastMessage("[telegram] 1");
+
 					if (update.getMessage() != null) {
 						Chat chat = update.getMessage().getChat();
 						if (true) {
@@ -104,18 +104,17 @@ public class Telegram {
 									}
 									this.sendMsg(chat.getId(), Utils.formatMSG("can-see-but-not-chat")[0]);
 								} else if (Main.getBackend().getLinkCodes().containsKey(text)) {
-									Bukkit.getServer().broadcastMessage("[telegram] 5");
 									// LINK
 									Main.link(Main.getBackend().getUUIDFromLinkCode(text), chat.getId());
 									Main.getBackend().removeLinkCode(text);
 								} else if (Main.getBackend().getLinkedChats().containsKey(chat.getId())) {
-									Bukkit.getServer().broadcastMessage("[telegram] 6");
 									ChatMessageToMc chatMsg = new ChatMessageToMc(
 											Main.getBackend().getUUIDFromChatID(chat.getId()), text, chat.getId());
 									for (TelegramActionListener actionListener : listeners) {
 										actionListener.onSendToMinecraft(chatMsg);
 									}
 									if(!chatMsg.isCancelled()){
+										Bukkit.getServer().broadcastMessage("[telegram] 4");
 										Main.sendToMC(chatMsg);
 									}
 								} else {
@@ -124,7 +123,6 @@ public class Telegram {
 							}
 
 						} else if (!chat.isPrivate()) {
-							Bukkit.getServer().broadcastMessage("[telegram] is not private");
 							int id = chat.getId();
 							if (!Main.getBackend().ids.contains(id))
 								Main.getBackend().ids.add(id);
