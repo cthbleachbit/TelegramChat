@@ -86,18 +86,14 @@ public class Telegram {
 						Chat chat = update.getMessage().getChat();
 						if (true) {
 //						if (chat.isPrivate()) {
-							Bukkit.getServer().broadcastMessage("[telegram] 2");
 							if (!Main.getBackend().ids.contains(chat.getId()))
 								Main.getBackend().ids.add(chat.getId());
 
 							if (update.getMessage().getText() != null) {
 								String text = update.getMessage().getText();
-								Bukkit.getServer().broadcastMessage("[telegram] 3");
-								Bukkit.getServer().broadcastMessage(text);
 								if (text.length() == 0)
 									return true;
 								if (text.equals("/start")) {
-									Bukkit.getServer().broadcastMessage("[telegram] 4");
 									if (Main.getBackend().isFirstUse()) {
 										Main.getBackend().setFirstUse(false);
 										ChatMessageToTelegram chat2 = new ChatMessageToTelegram();
@@ -123,14 +119,12 @@ public class Telegram {
 										Main.sendToMC(chatMsg);
 									}
 								} else {
-									Bukkit.getServer().broadcastMessage("[telegram] 7");
 									this.sendMsg(chat.getId(), Utils.formatMSG("need-to-link")[0]);
 								}
 							}
 
 						} else if (!chat.isPrivate()) {
 							Bukkit.getServer().broadcastMessage("[telegram] is not private");
-							System.out.print("[telegram] is not private");
 							int id = chat.getId();
 							if (!Main.getBackend().ids.contains(id))
 								Main.getBackend().ids.add(id);
