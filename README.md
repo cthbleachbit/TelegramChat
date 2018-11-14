@@ -23,8 +23,8 @@ that's all
 
 ## Known Issue
 
-* proxy setting is hard coded
 
 ## TODO
 
-* allow custom proxy in config.yml
+## Feel free to fire an issue
+
