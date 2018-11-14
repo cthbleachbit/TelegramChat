@@ -14,6 +14,10 @@ public class Data {
 	public List<Integer> ids = new ArrayList<Integer>();
 	private boolean firstUse = true;
 
+	private HashMap<Integer, UUID> groupLinkedChats = new HashMap<Integer, UUID>();
+	private HashMap<String, UUID> GroupLinkCodes = new HashMap<String, UUID>();
+
+
 	public String getToken() {
 		return token;
 	}
@@ -26,6 +30,10 @@ public class Data {
 		return linkedChats;
 	}
 
+	public HashMap<Integer, UUID> getGroupLinkedChats() {
+		return groupLinkedChats;
+	}
+
 	public void setLinkedChats(HashMap<Integer, UUID> linkedChats) {
 		this.linkedChats = linkedChats;
 	}
@@ -34,9 +42,14 @@ public class Data {
 		return linkCodes;
 	}
 
+	public HashMap<String, UUID> getGroupLinkCodes() {
+		return GroupLinkCodes;
+	}
+
 	public void setLinkCodes(HashMap<String, UUID> linkCodes) {
 		this.linkCodes = linkCodes;
 	}
+
 
 	public List<Integer> getIds() {
 		return ids;
@@ -58,6 +71,11 @@ public class Data {
 		linkedChats.put(chatID, player);
 	}
 
+	public void addGroupChatPlayerLink(int userID, UUID player) {
+		groupLinkedChats.put(userID, player);
+	}
+
+
 	public void addLinkCode(String code, UUID player) {
 		linkCodes.put(code, player);
 	}
@@ -72,6 +90,10 @@ public class Data {
 
 	public UUID getUUIDFromChatID(int chatID) {
 		return linkedChats.get(chatID);
+	}
+
+	public UUID getUUIDFromUserID(int userID) {
+		return groupLinkedChats.get(userID);
 	}
 
 }

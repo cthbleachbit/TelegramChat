@@ -5,6 +5,8 @@ public class Chat {
 	private String type;
 
 	public int getId() {
+		System.out.print("get ID");
+	    System.out.print(id);
 		return id;
 	}
 

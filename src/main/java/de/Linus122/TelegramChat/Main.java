@@ -133,6 +133,12 @@ public class Main extends JavaPlugin implements Listener {
 		telegramHook.sendMsg(chatID, "Success! Linked " + p.getName());
 	}
 
+	public static void groupLink(UUID player, int userID, int chatID) {
+		Main.data.addGroupChatPlayerLink(userID, player);
+		OfflinePlayer p = Bukkit.getOfflinePlayer(player);
+		telegramHook.sendMsg(chatID, "Success! Linked " + p.getName());
+	}
+
 	public static String generateLinkToken() {
 
 		Random rnd = new Random();
