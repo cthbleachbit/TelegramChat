@@ -38,6 +38,8 @@ public class Telegram {
 	private final String API_URL_GETUPDATES = "https://api.telegram.org/bot%s/getUpdates?offset=%d";
 	private final String API_URL_GENERAL = "https://api.telegram.org/bot%s/%s";
 
+	Proxy proxy = cfg.getBoolean("enable-proxy") ? new Proxy(Proxy.Type.HTTP, new InetSocketAddress(cfg.getString("proxy.address"), cfg.getInt("proxy.port"))) : null;
+
 	private Gson gson = new Gson();
 
 	public void addListener(TelegramActionListener actionListener) {
@@ -86,7 +88,7 @@ public class Telegram {
 					if (update.getMessage() != null) {
 						Chat chat = update.getMessage().getChat();
 						System.out.print(chat.getId());
-						if (!Main.getBackend().ids.contains(chat.getId()))
+						if (!Main.getBackend().ids.contains(chat.getId()) )
 							Main.getBackend().ids.add(chat.getId());
 
 						if (update.getMessage().getText() != null) {
@@ -158,18 +160,16 @@ public class Telegram {
 	public void sendAll(final ChatMessageToTelegram chat) {
 		new Thread(new Runnable() {
 			public void run() {
-//				for (int id : Main.getBackend().ids) {
 				chat.chat_id = cfg.getInt("group-id");
 				// post("sendMessage", gson.toJson(chat, Chat.class));
 				sendMsg(chat);
-//				}
 			}
 		}).start();
 	}
 
 	public void post(String method, String json) {
 		try {
-			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8001));
+//			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8001));
 
 			String body = json;
 			URL url = new URL(String.format(API_URL_GENERAL, Main.getBackend().getToken(), method));
@@ -199,7 +199,7 @@ public class Telegram {
 	}
 
 	public JsonObject sendGet(String url) throws IOException {
-		Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8001));
+//		Proxy proxy = cfg.getBoolean("enable-proxy") ? new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8001)) : null;
 		String a = url;
 		URL url2 = new URL(a);
 		URLConnection conn = url2.openConnection(proxy);

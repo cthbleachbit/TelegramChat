@@ -19,7 +19,7 @@ group-id: -1
 enable-joinquitmessages: true
 enable-deathmessages: true
 enable-chatmessages: true
-enable-proxy: true
+enable-proxy: false
 proxy:
   address: "127.0.0.1"
   port: 8001
