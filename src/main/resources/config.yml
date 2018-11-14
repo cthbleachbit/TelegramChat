@@ -7,7 +7,7 @@ messages:
   need-to-link: "Sorry, please link your account with */linktelegram ingame* to use the chat!"
   can-see-but-not-chat: "You can see the chat but you can't chat at the moment. Type */linktelegram ingame* to chat!"
   success-linked: "Success! Linked %s"
-  setup-msg: "Congratulations, your bot is working! Have fun with this Plugin. Feel free to donate via *PayPal* to keep this project up to date! [PayPal Donation URL](http://donate.spaceio.xyz/)"
+  setup-msg: "Congratulations, your bot is working! Have fun with this Plugin."
   # minecraft message:
   general-message-to-telegram: "%s: %s"
   no-permissions: "&cYou don't have permissions to use this!"
@@ -22,4 +22,4 @@ enable-chatmessages: true
 enable-proxy: true
 proxy:
   address: "127.0.0.1"
-  port: "8001"
+  port: 8001
